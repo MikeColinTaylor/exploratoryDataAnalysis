@@ -11,16 +11,15 @@ SCC <- readRDS("Source_Classification_Code.rds")
 str(NEI)
 str(SCC)
 
-byYear <- with(NEI, tapply(Emissions, year, sum))
+baltimore <- subset(NEI, NEI$fips == "24510")
 
-png("plot1.png")
-plot(names(byYear), byYear / 1000000, 
+baltimoreByYear <- with(baltimore, tapply(Emissions, year, sum))
+
+png("plot2.png")
+plot(names(baltimoreByYear), baltimoreByYear,  
      xlab = "Year",
-     ylab = "Total PM2.5 Emissions (Millions of Tons)",
-     main = "Fine particulate matter by year, USA")
-model <- lm((byYear / 1000000) ~ as.numeric(names(byYear)))
+     ylab = "Total PM2.5 Emissions (Tons)",
+     main = "Fine particulate matter by year, Baltimore")
+model <- lm(baltimoreByYear ~ as.numeric(names(baltimoreByYear)))
 abline(model, col = "blue")
 dev.off()
-
-
-
